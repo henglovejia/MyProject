@@ -5,7 +5,6 @@ package cn.edu.ecnu.heng.app;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import cn.edu.ecnu.heng.base.App;
 import cn.edu.ecnu.heng.utils.PropertiesUtil;
