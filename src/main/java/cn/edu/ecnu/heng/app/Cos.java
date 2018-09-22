@@ -1,4 +1,5 @@
 package cn.edu.ecnu.heng.app;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,16 +10,14 @@ public class Cos {
 	public static String Input_emb = "E:\\Resource\\DataSet\\glove.840B.300d.txt";
 	public static Map<String, String[]> words = new HashMap<>();
 
-	public static double calculateCos(String[] x, String[] y) {
+	public static double calculateCos(double[] x, double[] y) {
 		double vector1Modulo = 0.00;// 向量1的模
 		double vector2Modulo = 0.00;// 向量2的模
 		double vectorProduct = 0.00; // 向量积
-		for (int i = 1; i < x.length; i++) {
-			double value1 = Double.parseDouble(x[i]);
-			double value2 = Double.parseDouble(y[i]);
-			vector1Modulo += value1 * value1;
-			vector2Modulo += value2 * value2;
-			vectorProduct += value1 * value2;
+		for (int i = 0; i < x.length; i++) {
+			vector1Modulo += x[i] * x[i];
+			vector2Modulo += y[i] * y[i];
+			vectorProduct += x[i] * y[i];
 		}
 		vector1Modulo = Math.sqrt(vector1Modulo);
 		vector2Modulo = Math.sqrt(vector2Modulo);
@@ -46,10 +45,7 @@ public class Cos {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		words.put("park", null);
-		words.put("airport", null);
-		filter();
-		System.out.println(calculateCos(words.get("park"), words.get("airport")));
+		System.out.println(calculateCos(new double[] {4,0}, new double[] {4,3}));
 	}
 
 }

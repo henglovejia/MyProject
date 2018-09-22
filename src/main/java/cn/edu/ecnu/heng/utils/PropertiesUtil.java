@@ -19,7 +19,7 @@ public class PropertiesUtil {
 	static {
 		ClassLoader classLoader = PropertiesUtil.class.getClassLoader();
 		try {
-			pro.load(classLoader.getResourceAsStream("sql.properties"));
+			pro.load(classLoader.getResourceAsStream("config.properties"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

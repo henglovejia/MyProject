@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
 
+import cn.edu.ecnu.heng.base.App;
+
 /**
  * @author Heng
  *
@@ -15,23 +17,24 @@ import java.util.HashMap;
  *
  * @detail
  */
-public class CSVUtil {
+public class FileUtil {
 	/**
 	 * 
 	 */
-	public static HashMap<String, Double[]> getGlove(String filename) {
+	public static HashMap<String, double[]> getGlove(String filename) {
 		// TODO Auto-generated constructor stub
-		ClassLoader classLoader = CSVUtil.class.getClassLoader();
-		HashMap<String, Double[]> map = new HashMap<>();
+		ClassLoader classLoader = FileUtil.class.getClassLoader();
+		HashMap<String, double[]> map = new HashMap<>();
+		System.out.println("正在读取:" + filename);
 		try {
 			BufferedReader bReader = new BufferedReader(
 					new FileReader(new File(classLoader.getResource(filename).toString().replace("file:", ""))));
 			String line;
 			while ((line = bReader.readLine()) != null) {
 				String[] items = line.split(" ");
-				Double[] item = new Double[items.length-1];
+				double[] item = new double[items.length - 1];
 				for (int i = 1; i < items.length; i++) {
-					item[i-1] = Double.parseDouble(items[i]);
+					item[i - 1] = Double.parseDouble(items[i]);
 				}
 				map.put(items[0], item);
 			}
@@ -42,8 +45,8 @@ public class CSVUtil {
 		}
 		return map;
 	}
+
 	public static void main(String[] args) {
-		HashMap<String, Double[]> map = getGlove("glove.840B.300d.filter.txt");
-		System.out.println(map.get("the"));
+		System.out.println(App.getWordVectors().get("the"));
 	}
 }

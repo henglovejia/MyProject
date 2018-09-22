@@ -4,21 +4,21 @@
 package cn.edu.ecnu.heng.app;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import cn.edu.ecnu.heng.base.App;
 import cn.edu.ecnu.heng.utils.PropertiesUtil;
 
 /**
- * @author Heng
+ * 
+ * @author Heng(MacBook-Pro)
  *
- *         2018年9月22日-下午12:12:31
+ * @create 2018年9月22日-下午7:45:58
  *
  * @detail
  */
 public class Levenshtein {
 
-	private static int LevenshteinDistance(ArrayList<String> str1, ArrayList<String> str2) {
+	private static int calculateLevenshtein(ArrayList<String> str1, ArrayList<String> str2) {
 		ArrayList<String> minstr, maxstr;
 		int minlength, maxlength;
 		if (str1.size() < str2.size()) {
@@ -83,10 +83,15 @@ public class Levenshtein {
 		LevenshteinDistance = matrix_before[maxlength];
 		return (int) ((1 - (double) LevenshteinDistance / maxlength) * 100);
 	}
+	
+	public static boolean isSimilarity(String word1,String word2) {
+		System.out.println(Cos.calculateCos(App.getWordVectors().get(word1), App.getWordVectors().get(word2)));
+		if(Cos.calculateCos(App.getWordVectors().get(word1), App.getWordVectors().get(word2)) > PropertiesUtil.getDouble("cosRate")/100)
+			return true;
+		return false;
+	}
 
 	public static void main(String[] args) {
-		ArrayList<String> str1 = new ArrayList<>(Arrays.asList("1", "2", "3"));
-		ArrayList<String> str2 = new ArrayList<>(Arrays.asList("1", "2", "3"));
-		LevenshteinDistance(str1, str2);
+		System.out.println(isSimilarity("banana","apple"));
 	}
 }
