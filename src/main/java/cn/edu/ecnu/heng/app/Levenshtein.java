@@ -1,11 +1,9 @@
-/**
- * 
- */
 package cn.edu.ecnu.heng.app;
 
 import java.util.ArrayList;
 
 import cn.edu.ecnu.heng.base.App;
+import cn.edu.ecnu.heng.base.Question;
 import cn.edu.ecnu.heng.utils.PropertiesUtil;
 
 /**
@@ -17,8 +15,7 @@ import cn.edu.ecnu.heng.utils.PropertiesUtil;
  * @detail
  */
 public class Levenshtein {
-
-	private static int calculateLevenshtein(ArrayList<String> str1, ArrayList<String> str2) {
+	private static int calculate(ArrayList<String> str1, ArrayList<String> str2, boolean useCos) {
 		ArrayList<String> minstr, maxstr;
 		int minlength, maxlength;
 		if (str1.size() < str2.size()) {
@@ -60,7 +57,8 @@ public class Levenshtein {
 				left_top = matrix_before[j - 1];
 				double min = left > top ? top : left;
 				if (min >= left_top) {
-					matrix_after[j] = left_top + (minstr.get(i - 1).equals(maxstr.get(j - 1)) ? 0 : 1);
+					matrix_after[j] = left_top + (useCos ? (isSimilarity(minstr.get(i - 1), maxstr.get(j - 1)) ? 0 : 1)
+							: (minstr.get(i - 1).equals(maxstr.get(j - 1)) ? 0 : 1));
 				} else {
 					matrix_after[j] = min + 1;
 				}
@@ -83,15 +81,20 @@ public class Levenshtein {
 		LevenshteinDistance = matrix_before[maxlength];
 		return (int) ((1 - (double) LevenshteinDistance / maxlength) * 100);
 	}
-	
-	public static boolean isSimilarity(String word1,String word2) {
-		System.out.println(Cos.calculateCos(App.getWordVectors().get(word1), App.getWordVectors().get(word2)));
-		if(Cos.calculateCos(App.getWordVectors().get(word1), App.getWordVectors().get(word2)) > PropertiesUtil.getDouble("cosRate")/100)
+
+	public static boolean isSimilarity(String word1, String word2) {
+		if (Cos.calculate(App.getWordVectors().get(word1),
+				App.getWordVectors().get(word2)) > PropertiesUtil.getDouble("cosRate") / 100)
 			return true;
 		return false;
 	}
 
 	public static void main(String[] args) {
-		System.out.println(isSimilarity("banana","apple"));
+		Question question = new Question();
+		question.setQuestion1("How can I be a good geologist?");
+		question.setQuestion2("What should I do to be a great geologist?");
+		calculate(question.getQuestion1List(), question.getQuestion2List(), true);
+		System.out.println();
+		calculate(question.getQuestion1List(), question.getQuestion2List(), false);
 	}
 }
