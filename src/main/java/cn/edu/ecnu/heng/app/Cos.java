@@ -9,6 +9,7 @@ import java.util.Map;
 
 import cn.edu.ecnu.heng.base.App;
 import cn.edu.ecnu.heng.base.Question;
+import cn.edu.ecnu.heng.utils.PropertiesUtil;
 
 public class Cos {
 	public static String Input_emb = "E:\\Resource\\DataSet\\glove.840B.300d.txt";
@@ -17,15 +18,20 @@ public class Cos {
 	public static double[] meanCos(ArrayList<String> word) {
 		double[] vector = new double[300];
 		for (int i = 0; i < word.size(); i++) {
-			double[] vectorTmp = App.getWordVectors().get(word.get(i));
-			for (int j = 0; j < vectorTmp.length; j++) {
-				vector[j] += (vectorTmp[j] / word.size());
+			try {
+				double[] vectorTmp = App.getWordVectors(word.get(i));
+				for (int j = 0; j < vectorTmp.length; j++) {
+					vector[j] += (vectorTmp[j] / word.size());
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println(word.get(i));
 			}
 		}
 		return vector;
 	}
 
-	public static double calculate(double[] x, double[] y) {
+	public static Boolean calculate(double[] x, double[] y, double cosRate) {
 		double vector1Modulo = 0.00;// 向量1的模
 		double vector2Modulo = 0.00;// 向量2的模
 		double vectorProduct = 0.00; // 向量积
@@ -36,7 +42,9 @@ public class Cos {
 		}
 		vector1Modulo = Math.sqrt(vector1Modulo);
 		vector2Modulo = Math.sqrt(vector2Modulo);
-		return (vectorProduct / (vector1Modulo * vector2Modulo));
+		if ((vectorProduct / (vector1Modulo * vector2Modulo)) < cosRate)
+			return false;
+		return true;
 	}
 
 	public static void filter() {
@@ -63,6 +71,7 @@ public class Cos {
 		Question question = new Question();
 		question.setQuestion1("How can I be a good geologist?");
 		question.setQuestion2("What should I do to be a great geologist?");
-		System.out.println(calculate(meanCos(question.getQuestion1List()), meanCos(question.getQuestion2List())));
+		System.out.println(calculate(meanCos(question.getQuestion1List()), meanCos(question.getQuestion2List()),
+				PropertiesUtil.getDouble("cosRate")));
 	}
 }

@@ -27,7 +27,7 @@ public class App {
 		unimprove = new AtomicLong(0);
 		wordVectors = FileUtil.getGlove("glove.840B.300d.filter.txt");
 		stopWord = FileUtil.getStopWord("stop_words.txt");
-//		questions = FileUtil.getQuoraQuestions("quora_duplicate_questions.tsv");
+		questions = FileUtil.getQuoraQuestions("quora_duplicate_questions.tsv");
 	}
 
 	public static ArrayList<Question> getQuestions() {
@@ -38,8 +38,8 @@ public class App {
 		return stopWord;
 	}
 
-	public static HashMap<String, double[]> getWordVectors() {
-		return wordVectors;
+	public static double[] getWordVectors(String word) {
+		return wordVectors.get(word)==null?new double[300]:wordVectors.get(word);
 	}
 
 	public static AtomicLong getImprove() {

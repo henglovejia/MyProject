@@ -4,8 +4,10 @@
 package cn.edu.ecnu.heng.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -92,7 +94,23 @@ public class FileUtil {
 		return stopWord;
 	}
 
+	public static void writeResult(String filename) {
+		try {
+			ClassLoader classLoader = FileUtil.class.getClassLoader();
+			System.out.println("正在写入:" + filename);
+			BufferedWriter bWriter = new BufferedWriter(
+					new FileWriter(new File(classLoader.getResource(filename).toString().replace("file:", ""))));
+			for (Question question : App.getQuestions()) {
+				bWriter.write(question.toString());
+			}
+			bWriter.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+
 	public static void main(String[] args) {
-		System.out.println(App.getWordVectors().get("the"));
+		System.out.println(App.getWordVectors("the"));
 	}
 }

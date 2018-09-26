@@ -64,7 +64,7 @@ public class Question {
 	public void setQuestion1(String question1) {
 		this.question1 = question1;
 		question1List = new ArrayList<>(
-				Arrays.asList(question1.toLowerCase().replace("\"", "").replace("?", "").split(" ")));
+				Arrays.asList(question1.toLowerCase().replace("\"", "").replace("?", "").replace("(", "").replace(")", "").split(" ")));
 		for (int i = 0; i < question1List.size(); i++) {
 			if (App.getStopWord().contains(question1List.get(i))) {
 				question1List.remove(i);
@@ -108,7 +108,18 @@ public class Question {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return id + "\t" + qid1 + "\t" + qid2 + "\t" + question1 + "\t" + question2 + "\t" + isDuplicate + "\t"
-				+ levenshteinDuplicate + "\t" + cosDuplicate + "\t" + levenshteinAndCosDuplicate;
+		String line = id + "\t" + qid1 + "\t" + qid2 + "\t" + question1 + "\t" + question2 + "\t" + isDuplicate + "\t"
+				+ levenshteinDuplicate + "\t" + cosDuplicate + "\t" + levenshteinAndCosDuplicate + "\n";
+//		if(isDuplicate && levenshteinAndCosDuplicate) {
+//			if(!levenshteinDuplicate) {
+//				System.out.print(line);
+//			}
+//		}
+//		if(!isDuplicate && !levenshteinAndCosDuplicate) {
+//			if(levenshteinDuplicate) {
+//				System.out.print(line);
+//			}
+//		}
+		return line;
 	}
 }
